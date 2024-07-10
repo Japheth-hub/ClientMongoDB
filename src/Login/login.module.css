@@ -1,3 +1,27 @@
-.form{
-    background-color: red;
+.form {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.label,
+.input {
+    width: 80%;
+    font-size: 1.1rem;
+    margin: 0px auto;
+}
+
+.input {
+    margin-bottom: 10px;
+    padding: 2px 4px ;
+    border-radius: 8px;
+}
+
+.submit {
+    width: fit-content;
+    font-size: 1.1rem;
+    border-radius: 7px;
+    margin: 10px auto;
+    background-color: #eee;
+    padding: 2px 10px;
 }

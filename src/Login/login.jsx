@@ -1,12 +1,13 @@
-import { useState } from "react"
-import validarRegistro from "../Utils/validarRegistro"
-import axios from "axios"
+import React, { useState } from 'react'
 import style from "./login.module.css"
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { validarLogin } from '../Utils/validarLogin'
 
-function Login(){
+export default function Login() {
 
-    const [registro, setRegistro] = useState({
-        name: "",
+    const navigate = useNavigate()
+    const [login, setLogin] = useState({
         email: "",
         password: ""
     })
@@ -14,38 +15,41 @@ function Login(){
     function onChange(e){
         e.preventDefault()
         const {name, value} = e.target
-        setRegistro({...registro, [name]: value})
+        setLogin({...login, [name]: value})
     }
 
     async function submit(e){
         e.preventDefault()
-        const validacion = validarRegistro(registro)
-        if(validacion.length === 0){
-            try {
-                const respuesta = await axios.post("http://localhost:3000/users", registro)
-                console.log(respuesta)
-                alert("Usuario creado correctamente")
-            } catch (error) {
-                console.log(error.message)
-            }
-        } else {
+        const validacion = validarLogin(login)
+        if(validacion.length > 0){
             alert(validacion[0])
+        } else {
+            try {
+                const {data} = await axios.post("http://localhost:3000/users/login", login)
+                console.log(data)
+                if(data.success){
+                    setLogin({
+                        email: "",
+                        password: ""
+                    })
+                    alert("Login success")
+                    navigate("/home")
+                }
+            } catch (error) {
+                console.log(error.response.data.message)
+            }
         }
     }
 
     return (
-        <>
-        <form className={style.form}>
-            <label>Nombre</label>
-            <input type="text" name="name" required onChange={onChange}/>
-            <label>Correo</label>
-            <input type="email" name="email" required onChange={onChange}/>
-            <label>Password</label>
-            <input type="password" name="password" required onChange={onChange}/>
-            <input type="submit" onClick={submit}/>
-        </form>
-        </>
+        <div>
+            <form className={style.form}>
+                <label className={style.label}>Correo</label>
+                <input className={style.input} type="email" name="email" required value={login.email} onChange={onChange}/>
+                <label className={style.label}>Password</label>
+                <input className={style.input} type="password" name="password" required value={login.password} onChange={onChange}/>
+                <input className={style.submit} type="submit" onClick={submit} value="Login"/>
+            </form>
+        </div>
     )
 }
-
-export default Login
