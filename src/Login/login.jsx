@@ -26,17 +26,19 @@ export default function Login() {
         } else {
             try {
                 const {data} = await axios.post("http://localhost:3000/users/login", login)
-                console.log(data)
                 if(data.success){
                     setLogin({
                         email: "",
                         password: ""
                     })
+                    localStorage.setItem("user", JSON.stringify(data.user))
                     alert("Login success")
-                    navigate("/home")
+                    navigate("/dashboard")
+                } else {
+                    alert(data.message)
                 }
             } catch (error) {
-                console.log(error.response.data.message)
+                console.log(error)
             }
         }
     }

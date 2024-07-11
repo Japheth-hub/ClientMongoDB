@@ -2,6 +2,7 @@ import { useState } from 'react'
 import {Route, Routes} from "react-router-dom"
 import './App.css'
 import Inicio from './Inicio/inicio'
+import Dashboard from './Dashboard/dashboard'
 
 function App() {
 
@@ -9,6 +10,7 @@ function App() {
     <>
       <Routes>
         <Route path='/' element= {<Inicio />}/>
+        <Route path='/dashboard' element= {<Dashboard />}/>
       </Routes>
     </>
   )
